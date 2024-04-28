@@ -58,6 +58,15 @@ services:
     ports:
       - "5432:5432"
 
+  migrate:
+    image: migrate/migrate
+    restart: on-failure
+    volumes:
+      - ./migrations:/migrations
+    command: [ "-path", "/migrations", "-database", "postgres://postgres:mysecretpassword@postgres:5432/postgres?sslmode=disable", "up" ]
+    depends_on:
+      - postgres
+
   redis:
     image: redis:alpine
     restart: unless-stopped

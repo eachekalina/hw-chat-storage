@@ -40,6 +40,9 @@ type config struct {
 		group   string
 		topics  []string
 	}
+	grpc struct {
+		addr string
+	}
 }
 
 func run(ctx context.Context) error {
@@ -81,7 +84,7 @@ func run(ctx context.Context) error {
 	})
 
 	eg.Go(func() error {
-		err := grpc.Run(ctx, grpcMsgHandler, grpcUserHandler)
+		err := grpc.Run(ctx, cfg.grpc.addr, grpcMsgHandler, grpcUserHandler)
 		if err != nil {
 			return fmt.Errorf("grpc: %w", err)
 		}
@@ -98,6 +101,7 @@ func getConfig() (config, error) {
 	cfg.kafka.brokers = strings.Split(os.Getenv("KAFKA_BROKERS"), ",")
 	cfg.kafka.group = lookupEnvDefault("KAFKA_GROUP", "storage")
 	cfg.kafka.topics = strings.Split(lookupEnvDefault("KAFKA_TOPICS", "messages"), ",")
+	cfg.grpc.addr = lookupEnvDefault("GRPC_LISTEN_ADDR", ":9090")
 
 	return cfg, nil
 }

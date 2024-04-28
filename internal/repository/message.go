@@ -16,7 +16,7 @@ func NewMessageRepository(pool *pgxpool.Pool) *MessageRepository {
 }
 
 func (r *MessageRepository) AddMessage(ctx context.Context, msg model.Message) error {
-	_, err := r.pool.Exec(ctx, `INSERT INTO messages (sent_time, nickname, msg) VALUES ($1, $2, $3)`, msg.SentTime, msg.Nickname, msg.Message)
+	_, err := r.pool.Exec(ctx, `INSERT INTO messages (sent_time, nickname, message) VALUES ($1, $2, $3)`, msg.SentTime, msg.Nickname, msg.Message)
 	return err
 }
 

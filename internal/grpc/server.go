@@ -9,8 +9,8 @@ import (
 	"net"
 )
 
-func Run(ctx context.Context, msgHandler pb.MessageStorageServer, userHandler pb.UserStorageServer) error {
-	lis, err := net.Listen("tcp", "localhost")
+func Run(ctx context.Context, addr string, msgHandler pb.MessageStorageServer, userHandler pb.UserStorageServer) error {
+	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		return fmt.Errorf("listen: %w", err)
 	}
